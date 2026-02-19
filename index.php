@@ -1,11 +1,12 @@
+<link rel="stylesheet" href="./css/style.css">
 <?php
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$title = "Accueil";
+
 
 if ($uri === '/' || $uri === '/index') {
-    require 'templates/header.php';
-    echo "Projet API Film";
+    require './templates/header.php';
+    require './templates/home.php';
 } elseif ($uri === '/contact') {
     echo "Page contact";
 } else {
@@ -13,4 +14,5 @@ if ($uri === '/' || $uri === '/index') {
     echo "Page introuvable";
 }
 
+?>
 
