@@ -432,7 +432,6 @@
 </header>
 
 <section class="hero">
-  <div class="hero-tag">Propulsé par TMDB</div>
   <h1>Découvrez les films<br>qui <em>vous attendent</em></h1>
 </section>
 
@@ -570,21 +569,44 @@
   }
 
   function renderFavorites() {
-    const el = document.getElementById('fav-content');
-    if (!favorites.length) {
-      el.innerHTML = `<p class="empty-fav">Aucun film en favori pour le moment.</p>`;
-      return;
-    }
-    el.innerHTML = `
-      <p style="color:var(--muted); margin-bottom:1rem; font-size:0.85rem;">
-        ${favorites.length} film(s) enregistré(s) localement et sur le serveur.
-      </p>
-      <div class="fav-ids">
-        ${favorites.map(id => `<span class="fav-chip">#${id}</span>`).join('')}
-      </div>
-      <br>
-      <button class="tab-btn" onclick="clearFavorites()">Vider les favoris</button>`;
+
+  const el = document.getElementById('fav-content');
+
+  if (!favorites.length) {
+    el.innerHTML = `<p class="empty-fav">Aucun film en favori pour le moment.</p>`;
+    return;
   }
+
+  el.innerHTML = `
+    <div class="movies-grid">
+      ${favorites.map(movie => {
+
+        const poster = movie.poster_path
+          ? `<img class="card-poster" src="https://image.tmdb.org/t/p/w342${movie.poster_path}">`
+          : `<div class="poster-placeholder">🎬</div>`;
+
+        return `
+          <div class="movie-card">
+            <div class="poster-wrap">
+              ${poster}
+            </div>
+            <div class="card-info">
+              <div class="card-title">${movie.title}</div>
+              <div class="card-meta">
+                <span class="card-date">${movie.release_date?.slice(0,4) || '—'}</span>
+                <span class="card-rating">${movie.vote_average?.toFixed(1) || '—'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+
+      }).join('')}
+    </div>
+
+    <br>
+    <button class="tab-btn" onclick="clearFavorites()">Vider les favoris</button>
+  `;
+}
 
   function clearFavorites() {
     favorites = [];
