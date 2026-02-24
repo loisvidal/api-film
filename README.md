@@ -1,13 +1,5 @@
-# api-film
-les deux commandes atm
-GET http://localhost:8000/movies?type=popular
+a faire 
 
-type possible - popular
-- upcoming
-- top_rated
-- now_playing
-
-POST http://localhost:8000/favorites
-{
-  "movie_id": 550
-}
+render l'onglet favoris ( suppr les ongets + render les films)
+accuiel et quand appuie sur film render tout les films
+rjouter barre de recherche
