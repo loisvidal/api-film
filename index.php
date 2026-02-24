@@ -7,7 +7,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Content-Type: application/json");
 
-// ----------- ROUTES API -----------
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -22,10 +21,8 @@ if ($method === 'POST' && $path === '/favorites') {
     exit;
 }
 
-// ----------- ROUTES FRONT HTML -----------
 if ($path === '/' || $path === '/index') {
     header("Content-Type: text/html");
-    //require './templates/header.php';
     require './templates/home.php';
     exit;
 }

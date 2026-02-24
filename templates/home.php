@@ -28,7 +28,6 @@
       overflow-x: hidden;
     }
 
-    /* NOISE TEXTURE */
     body::before {
       content: '';
       position: fixed;
@@ -39,7 +38,6 @@
       opacity: 0.4;
     }
 
-    /* HEADER */
     header {
       position: sticky;
       top: 0;
@@ -95,7 +93,6 @@
       margin-left: 6px;
     }
 
-    /* HERO */
     .hero {
       padding: 5rem 3rem 3rem;
       position: relative;
@@ -134,7 +131,6 @@
       font-style: italic;
     }
 
-    /* TABS */
     .tabs {
       display: flex;
       gap: 0.5rem;
@@ -168,7 +164,6 @@
       font-weight: 500;
     }
 
-    /* GRID */
     .movies-section {
       padding: 2.5rem 3rem 4rem;
     }
@@ -187,7 +182,6 @@
       gap: 1.5rem;
     }
 
-    /* CARD */
     .movie-card {
       position: relative;
       cursor: pointer;
@@ -326,7 +320,6 @@
       content: '★';
     }
 
-    /* LOADING */
     .loader {
       display: flex;
       justify-content: center;
@@ -351,7 +344,6 @@
       40% { transform: scale(1); opacity: 1; }
     }
 
-    /* ERROR */
     .error-box {
       text-align: center;
       padding: 4rem;
@@ -359,7 +351,6 @@
     }
     .error-box strong { color: var(--accent); display: block; font-size: 1.2rem; margin-bottom: 0.5rem; }
 
-    /* TOAST */
     .toast {
       position: fixed;
       bottom: 2rem;
@@ -381,7 +372,6 @@
       opacity: 1;
     }
 
-    /* FAVORITES PANEL */
     .favorites-panel {
       display: none;
       padding: 2rem 3rem 4rem;
@@ -415,7 +405,6 @@
       margin-top: 1.5rem;
     }
 
-    /* DECORATIVE LINE */
     .deco-line {
       width: 60px;
       height: 2px;
@@ -469,21 +458,17 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ---- CONFIG ----
-  // Remplacez par l'URL de votre backend PHP (ex: http://localhost:8000)
   const API_BASE = '';
 
   let favorites = JSON.parse(localStorage.getItem('cinevault_favs') || '[]');
   updateFavCount();
 
-  // ---- NAVIGATION ----
   function showSection(section) {
     document.getElementById('movies-section').style.display = section === 'movies' ? 'block' : 'none';
     document.getElementById('favorites-section').classList.toggle('active', section === 'favorites');
     if (section === 'favorites') renderFavorites();
   }
 
-  // ---- LOAD MOVIES ----
   async function loadMovies(type = 'popular', tabEl = null) {
     if (tabEl) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -510,7 +495,6 @@
     }
   }
 
-  // ---- RENDER MOVIES ----
   function renderMovies(movies) {
     const container = document.getElementById('movies-container');
     if (!movies.length) {
@@ -552,7 +536,6 @@
     }).join('');
   }
 
-  // ---- FAVORITES ----
   async function toggleFav(movieId, btn) {
     const isSaved = favorites.includes(movieId);
 
@@ -562,7 +545,6 @@
       btn.classList.remove('saved');
       showToast('Retiré des favoris');
     } else {
-      // POST to backend
       try {
         const res = await fetch(`${API_BASE}/favorites`, {
           method: 'POST',
@@ -571,7 +553,6 @@
         });
         if (!res.ok) throw new Error();
       } catch (e) {
-        // Backend unavailable: save locally only
       }
 
       favorites.push(movieId);
@@ -613,7 +594,6 @@
     showToast('Favoris effacés');
   }
 
-  // ---- TOAST ----
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -621,7 +601,6 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ---- INIT ----
   loadMovies('popular');
 </script>
 </body>
