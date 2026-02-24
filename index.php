@@ -22,9 +22,6 @@ if ($method === 'POST' && $path === '/favorites') {
 http_response_code(404);
 echo json_encode(["error" => "Route inconnue"]);
 
-<link rel="stylesheet" href="./css/style.css">
-<?php
-
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 
