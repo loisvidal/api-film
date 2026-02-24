@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../services/TMDBService.php';
 
 class MovieController {
@@ -19,6 +18,8 @@ class MovieController {
             return;
         }
 
+        $movieId = (int) $data['movie_id']; // Cast en entier
+
         $file = __DIR__ . '/../data/favorites.json';
 
         if (!file_exists($file)) {
@@ -27,12 +28,21 @@ class MovieController {
 
         $favorites = json_decode(file_get_contents($file), true);
 
-        if (!in_array($data['movie_id'], $favorites)) {
-            $favorites[] = $data['movie_id'];
+        if (!is_array($favorites)) { // Protection si le fichier est vide ou corrompu
+            $favorites = [];
+        }
+
+        if (!in_array($movieId, $favorites)) {
+            $favorites[] = $movieId;
         }
 
         file_put_contents($file, json_encode($favorites));
-
         echo json_encode(["success" => true, "favorites" => $favorites]);
+    }
+
+    public static function clearFavorites() {
+        $file = __DIR__ . '/../data/favorites.json';
+        file_put_contents($file, json_encode([]));
+        echo json_encode(["success" => true, "favorites" => []]);
     }
 }

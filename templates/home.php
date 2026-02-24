@@ -391,20 +391,98 @@
       display: block;
     }
 
-    .fav-ids {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+    .fav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
       margin-top: 1rem;
     }
 
-    .fav-chip {
-      background: var(--surface2);
-      border: 1px solid rgba(201,168,76,0.3);
-      color: var(--gold);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
+    .fav-card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
+      animation: fadeUp 0.4s ease both;
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .fav-card:hover { transform: translateY(-5px); }
+
+    .fav-card:hover .fav-card-overlay { opacity: 1; }
+    .fav-card:hover .card-poster { transform: scale(1.04); }
+
+    .fav-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,10,15,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .btn-remove {
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all 0.2s;
+    }
+
+    .btn-remove:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .fav-meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .fav-count-label {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .btn-clear {
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(224,92,92,0.4);
+      background: transparent;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all 0.2s;
+    }
+    .btn-clear:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .fav-card-info { padding: 0.75rem; }
+    .fav-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.92rem;
+      line-height: 1.3;
+      margin-bottom: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fav-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .empty-fav {
@@ -469,11 +547,15 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ---- CONFIG ----
-  // Remplacez par l'URL de votre backend PHP (ex: http://localhost:8000)
-  const API_BASE = '';
+  const API_BASE = ''; // Remplacez par ex: http://localhost:8000
 
+  // favorites = tableau d'objets film {id, title, poster_path, release_date, vote_average}
   let favorites = JSON.parse(localStorage.getItem('cinevault_favs') || '[]');
+  // Migration: si anciens favoris étaient des nombres, on réinitialise
+  if (favorites.length && typeof favorites[0] !== 'object') {
+    favorites = [];
+    localStorage.removeItem('cinevault_favs');
+  }
   updateFavCount();
 
   // ---- NAVIGATION ----
@@ -489,13 +571,11 @@
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       tabEl.classList.add('active');
     }
-
     showSection('movies');
     const container = document.getElementById('movies-container');
     container.innerHTML = `<div class="loader" style="grid-column:1/-1">
       <div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div>
     </div>`;
-
     try {
       const res = await fetch(`${API_BASE}/movies?type=${type}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -510,76 +590,123 @@
     }
   }
 
+  // ---- BUILD CARD HTML (réutilisé pour movies & favoris) ----
+  function buildCardHTML(movie, i = 0, removable = false) {
+    const poster = movie.poster_path
+      ? `<img class="card-poster" src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="${movie.title}" loading="lazy"/>`
+      : `<div class="poster-placeholder">🎬</div>`;
+    const year = movie.release_date ? movie.release_date.slice(0, 4) : '—';
+    const rating = movie.vote_average ? (+movie.vote_average).toFixed(1) : '—';
+    const isFav = favorites.some(f => f.id === movie.id);
+    const synopsis = movie.overview || 'Aucun résumé disponible.';
+
+    if (removable) {
+      return `
+        <div class="fav-card" style="animation-delay:${i * 0.04}s" data-id="${movie.id}">
+          <div class="poster-wrap">
+            ${poster}
+            <div class="fav-card-overlay">
+              <button class="btn-remove" onclick="removeFav(${movie.id})">✕ Retirer</button>
+            </div>
+          </div>
+          <div class="fav-card-info">
+            <div class="fav-card-title" title="${movie.title}">${movie.title}</div>
+            <div class="fav-card-meta">
+              <span class="card-date">${year}</span>
+              <span class="card-rating">${rating}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    return `
+      <div class="movie-card" style="animation-delay:${i * 0.04}s" data-id="${movie.id}">
+        <div class="poster-wrap">
+          ${poster}
+          <div class="card-overlay">
+            <p class="overlay-synopsis">${synopsis}</p>
+            <div class="overlay-actions">
+              <button class="btn-fav ${isFav ? 'saved' : ''}" onclick="toggleFav(${movie.id}, this)" data-id="${movie.id}">
+                ${isFav ? '✓ Sauvegardé' : '+ Favoris'}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-title" title="${movie.title}">${movie.title}</div>
+          <div class="card-meta">
+            <span class="card-date">${year}</span>
+            <span class="card-rating">${rating}</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
   // ---- RENDER MOVIES ----
+  // On stocke les données pour pouvoir les retrouver lors du toggleFav
+  let currentMoviesData = {};
+
   function renderMovies(movies) {
     const container = document.getElementById('movies-container');
     if (!movies.length) {
       container.innerHTML = `<div class="error-box" style="grid-column:1/-1"><strong>Aucun film trouvé</strong></div>`;
       return;
     }
-
-    container.innerHTML = movies.map((movie, i) => {
-      const poster = movie.poster_path
-        ? `<img class="card-poster" src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="${movie.title}" loading="lazy"/>`
-        : `<div class="poster-placeholder">🎬</div>`;
-
-      const year = movie.release_date ? movie.release_date.slice(0, 4) : '—';
-      const rating = movie.vote_average ? movie.vote_average.toFixed(1) : '—';
-      const isFav = favorites.includes(movie.id);
-      const synopsis = movie.overview || 'Aucun résumé disponible.';
-
-      return `
-        <div class="movie-card" style="animation-delay:${i * 0.04}s">
-          <div class="poster-wrap">
-            ${poster}
-            <div class="card-overlay">
-              <p class="overlay-synopsis">${synopsis}</p>
-              <div class="overlay-actions">
-                <button class="btn-fav ${isFav ? 'saved' : ''}" onclick="toggleFav(${movie.id}, this)" data-id="${movie.id}">
-                  ${isFav ? '✓ Sauvegardé' : '+ Favoris'}
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="card-info">
-            <div class="card-title" title="${movie.title}">${movie.title}</div>
-            <div class="card-meta">
-              <span class="card-date">${year}</span>
-              <span class="card-rating">${rating}</span>
-            </div>
-          </div>
-        </div>`;
-    }).join('');
+    movies.forEach(m => { currentMoviesData[m.id] = m; });
+    container.innerHTML = movies.map((movie, i) => buildCardHTML(movie, i, false)).join('');
   }
 
-  // ---- FAVORITES ----
+  // ---- TOGGLE FAV ----
   async function toggleFav(movieId, btn) {
-    const isSaved = favorites.includes(movieId);
+    const isSaved = favorites.some(f => f.id === movieId);
 
     if (isSaved) {
-      favorites = favorites.filter(id => id !== movieId);
+      removeFav(movieId);
       btn.textContent = '+ Favoris';
       btn.classList.remove('saved');
-      showToast('Retiré des favoris');
     } else {
-      // POST to backend
+      const movieData = currentMoviesData[movieId];
+      if (!movieData) return;
+
+      // POST au backend
       try {
-        const res = await fetch(`${API_BASE}/favorites`, {
+        await fetch(`${API_BASE}/favorites`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ movie_id: movieId })
+          body: JSON.stringify({ movie_id: parseInt(movieId) })
         });
-        if (!res.ok) throw new Error();
-      } catch (e) {
-        // Backend unavailable: save locally only
-      }
+      } catch (e) { /* backend indisponible, on sauvegarde quand même */ }
 
-      favorites.push(movieId);
+      favorites.push({
+        id: movieData.id,
+        title: movieData.title,
+        poster_path: movieData.poster_path || null,
+        release_date: movieData.release_date || '',
+        vote_average: movieData.vote_average || 0,
+        overview: movieData.overview || ''
+      });
       btn.textContent = '✓ Sauvegardé';
       btn.classList.add('saved');
       showToast('Ajouté aux favoris ✓');
     }
 
+    saveFavorites();
+  }
+
+  function removeFav(movieId) {
+    favorites = favorites.filter(f => f.id !== movieId);
+    saveFavorites();
+    showToast('Retiré des favoris');
+    // Si le panel favoris est actif, on le rafraîchit
+    if (document.getElementById('favorites-section').classList.contains('active')) {
+      renderFavorites();
+    }
+    // Mettre à jour le bouton dans la grille si visible
+    const btn = document.querySelector(`.btn-fav[data-id="${movieId}"]`);
+    if (btn) { btn.textContent = '+ Favoris'; btn.classList.remove('saved'); }
+  }
+
+  function saveFavorites() {
     localStorage.setItem('cinevault_favs', JSON.stringify(favorites));
     updateFavCount();
   }
@@ -588,28 +715,39 @@
     document.getElementById('fav-count').textContent = favorites.length;
   }
 
+  // ---- RENDER FAVORITES ----
   function renderFavorites() {
     const el = document.getElementById('fav-content');
     if (!favorites.length) {
-      el.innerHTML = `<p class="empty-fav">Aucun film en favori pour le moment.</p>`;
+      el.innerHTML = `<p class="empty-fav">Aucun film en favori pour le moment.<br><small style="font-size:0.75rem;font-style:normal;color:var(--muted)">Survolez un film et cliquez sur "+ Favoris"</small></p>`;
       return;
     }
     el.innerHTML = `
-      <p style="color:var(--muted); margin-bottom:1rem; font-size:0.85rem;">
-        ${favorites.length} film(s) enregistré(s) localement et sur le serveur.
-      </p>
-      <div class="fav-ids">
-        ${favorites.map(id => `<span class="fav-chip">#${id}</span>`).join('')}
+      <div class="fav-meta-bar">
+        <span class="fav-count-label">${favorites.length} film${favorites.length > 1 ? 's' : ''} sauvegardé${favorites.length > 1 ? 's' : ''}</span>
+        <button class="btn-clear" onclick="clearFavorites()">Tout effacer</button>
       </div>
-      <br>
-      <button class="tab-btn" onclick="clearFavorites()">Vider les favoris</button>`;
+      <div class="fav-grid">
+        ${favorites.map((movie, i) => buildCardHTML(movie, i, true)).join('')}
+      </div>`;
   }
 
-  function clearFavorites() {
+  async function clearFavorites() {
+    // Vider côté backend
+    try {
+      await fetch(`${API_BASE}/favorites`, { method: 'DELETE' });
+    } catch (e) { /* backend indisponible */ }
+
+    // Vider côté frontend
     favorites = [];
     localStorage.removeItem('cinevault_favs');
     updateFavCount();
     renderFavorites();
+    // Réinitialiser tous les boutons dans la grille
+    document.querySelectorAll('.btn-fav.saved').forEach(btn => {
+      btn.textContent = '+ Favoris';
+      btn.classList.remove('saved');
+    });
     showToast('Favoris effacés');
   }
 

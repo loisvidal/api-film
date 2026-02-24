@@ -1,11 +1,16 @@
 <?php
-
 require_once 'config/config.php';
 require_once 'controllers/MovieController.php';
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
 header("Content-Type: application/json");
+
+// Preflight OPTIONS
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 // ----------- ROUTES API -----------
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -22,10 +27,14 @@ if ($method === 'POST' && $path === '/favorites') {
     exit;
 }
 
+if ($method === 'DELETE' && $path === '/favorites') {
+    MovieController::clearFavorites();
+    exit;
+}
+
 // ----------- ROUTES FRONT HTML -----------
 if ($path === '/' || $path === '/index') {
     header("Content-Type: text/html");
-    //require './templates/header.php';
     require './templates/home.php';
     exit;
 }
