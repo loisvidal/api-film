@@ -38,7 +38,6 @@
       opacity: 0.4;
     }
 
-    /* HEADER */
     header {
       position: sticky;
       top: 0;
@@ -59,18 +58,9 @@
       letter-spacing: -0.02em;
       color: var(--gold);
     }
+    .logo span { color: var(--text); font-style: italic; }
 
-    .logo span {
-      color: var(--text);
-      font-style: italic;
-    }
-
-    nav {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-
+    nav { display: flex; gap: 2rem; align-items: center; }
     nav a {
       color: var(--muted);
       text-decoration: none;
@@ -86,15 +76,13 @@
       color: #fff;
       border-radius: 50%;
       font-size: 0.7rem;
-      width: 18px;
-      height: 18px;
+      width: 18px; height: 18px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       margin-left: 6px;
     }
 
-    /* TABS */
     .tabs {
       display: flex;
       gap: 0.5rem;
@@ -115,23 +103,10 @@
       border-radius: var(--radius);
       transition: all 0.2s;
     }
+    .tab-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .tab-btn.active { background: var(--gold); color: #0a0a0f; border-color: var(--gold); font-weight: 500; }
 
-    .tab-btn:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .tab-btn.active {
-      background: var(--gold);
-      color: #0a0a0f;
-      border-color: var(--gold);
-      font-weight: 500;
-    }
-
-    /* GRID */
-    .movies-section {
-      padding: 2.5rem 3rem 4rem;
-    }
+    .movies-section { padding: 2.5rem 3rem 4rem; }
 
     .movies-grid {
       display: grid;
@@ -139,7 +114,6 @@
       gap: 1.5rem;
     }
 
-    /* CARD */
     .movie-card {
       position: relative;
       cursor: pointer;
@@ -159,42 +133,29 @@
     .movie-card:hover .card-overlay { opacity: 1; }
     .movie-card:hover .card-poster { transform: scale(1.04); }
 
-    .poster-wrap {
-      position: relative;
-      aspect-ratio: 2/3;
-      overflow: hidden;
-    }
+    .poster-wrap { position: relative; aspect-ratio: 2/3; overflow: hidden; }
 
     .card-poster {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
       transition: transform 0.4s ease;
     }
 
     .poster-placeholder {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       background: var(--surface2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 2.5rem;
     }
 
     .card-overlay {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 50%, transparent 100%);
       opacity: 0;
       transition: opacity 0.3s;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       justify-content: flex-end;
-      padding: 1rem;
-      gap: 0.5rem;
+      padding: 1rem; gap: 0.5rem;
     }
 
     .overlay-synopsis {
@@ -210,72 +171,39 @@
     .overlay-actions { display: flex; gap: 0.5rem; }
 
     .btn-fav {
-      flex: 1;
-      padding: 0.45rem;
+      flex: 1; padding: 0.45rem;
       border: 1px solid var(--gold);
-      background: transparent;
-      color: var(--gold);
+      background: transparent; color: var(--gold);
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      cursor: pointer;
+      font-size: 0.75rem; letter-spacing: 0.06em;
+      text-transform: uppercase; cursor: pointer;
       border-radius: var(--radius);
       transition: all 0.2s;
     }
-
-    .btn-fav:hover, .btn-fav.saved {
-      background: var(--gold);
-      color: #0a0a0f;
-    }
+    .btn-fav:hover, .btn-fav.saved { background: var(--gold); color: #0a0a0f; }
+    .btn-fav:disabled { opacity: 0.5; cursor: wait; }
 
     .card-info { padding: 0.75rem; }
-
     .card-title {
       font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      line-height: 1.3;
+      font-size: 0.95rem; line-height: 1.3;
       margin-bottom: 0.3rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
-    .card-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
+    .card-meta { display: flex; justify-content: space-between; align-items: center; }
     .card-date { font-size: 0.72rem; color: var(--muted); }
-
-    .card-rating {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.75rem;
-      color: var(--gold);
-      font-weight: 500;
-    }
+    .card-rating { display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--gold); font-weight: 500; }
     .card-rating::before { content: '★'; }
 
-    /* LOADING */
     .loader {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 300px;
-      gap: 8px;
+      display: flex; justify-content: center; align-items: center;
+      height: 300px; gap: 8px;
     }
-
     .loader-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: var(--gold);
       animation: pulse 1.2s ease-in-out infinite;
     }
-
     .loader-dot:nth-child(2) { animation-delay: 0.2s; }
     .loader-dot:nth-child(3) { animation-delay: 0.4s; }
 
@@ -284,35 +212,21 @@
       40% { transform: scale(1); opacity: 1; }
     }
 
-    /* ERROR */
     .error-box { text-align: center; padding: 4rem; color: var(--muted); }
     .error-box strong { color: var(--accent); display: block; font-size: 1.2rem; margin-bottom: 0.5rem; }
 
-    /* TOAST */
     .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--surface2);
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius);
-      font-size: 0.85rem;
-      transform: translateY(80px);
-      opacity: 0;
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--surface2); border: 1px solid var(--gold);
+      color: var(--gold); padding: 0.75rem 1.5rem;
+      border-radius: var(--radius); font-size: 0.85rem;
+      transform: translateY(80px); opacity: 0;
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       z-index: 200;
     }
-
     .toast.show { transform: translateY(0); opacity: 1; }
 
-    /* FAVORITES PANEL */
-    .favorites-panel {
-      display: none;
-      padding: 2.5rem 3rem 4rem;
-    }
-
+    .favorites-panel { display: none; padding: 2.5rem 3rem 4rem; }
     .favorites-panel.active { display: block; }
 
     .fav-grid {
@@ -322,94 +236,58 @@
     }
 
     .fav-card {
-      position: relative;
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--surface);
+      position: relative; border-radius: var(--radius);
+      overflow: hidden; background: var(--surface);
       animation: fadeUp 0.4s ease both;
       transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-
     .fav-card:hover { transform: translateY(-5px); }
     .fav-card:hover .fav-card-overlay { opacity: 1; }
     .fav-card:hover .card-poster { transform: scale(1.04); }
 
     .fav-card-overlay {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: rgba(10,10,15,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.25s;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.25s;
     }
 
     .btn-remove {
       padding: 0.5rem 1.2rem;
-      border: 1px solid var(--accent);
-      background: transparent;
-      color: var(--accent);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: var(--radius);
-      transition: all 0.2s;
+      border: 1px solid var(--accent); background: transparent; color: var(--accent);
+      font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; border-radius: var(--radius); transition: all 0.2s;
     }
-
     .btn-remove:hover { background: var(--accent); color: #fff; }
 
-    /* Barre au-dessus de la grille favoris */
     .fav-meta-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 1.5rem;
     }
-
     .fav-count-label { color: var(--muted); font-size: 0.85rem; }
 
     .btn-clear {
       padding: 0.4rem 1rem;
-      border: 1px solid rgba(224,92,92,0.4);
-      background: transparent;
-      color: var(--accent);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: var(--radius);
-      transition: all 0.2s;
+      border: 1px solid rgba(224,92,92,0.4); background: transparent; color: var(--accent);
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; border-radius: var(--radius); transition: all 0.2s;
     }
     .btn-clear:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
     .fav-card-info { padding: 0.75rem; }
-
     .fav-card-title {
       font-family: 'Playfair Display', serif;
-      font-size: 0.92rem;
-      line-height: 1.3;
-      margin-bottom: 0.3rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 0.92rem; line-height: 1.3; margin-bottom: 0.3rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
-    .fav-card-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    .fav-card-meta { display: flex; justify-content: space-between; align-items: center; }
 
     .empty-fav {
-      color: var(--muted);
-      font-style: italic;
+      color: var(--muted); font-style: italic;
       font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      padding: 3rem 0;
+      font-size: 1.1rem; padding: 3rem 0;
     }
 
     @media (max-width: 768px) {
@@ -449,15 +327,37 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const API_BASE = '';
+  const API_BASE = ''; // ex: 'http://localhost:8000'
 
-  let favorites = JSON.parse(localStorage.getItem('cinevault_favs') || '[]');
-  if (favorites.length && typeof favorites[0] !== 'object') {
-    favorites = [];
-    localStorage.removeItem('cinevault_favs');
+  // Cache local des IDs favoris pour savoir si un film est déjà sauvegardé
+  // (évite de requêter le serveur à chaque rendu de carte)
+  let favIds = new Set();
+  let currentMoviesData = {};
+
+  // ---- INIT ----
+  async function init() {
+    await syncFavIds();
+    loadMovies('popular');
   }
-  updateFavCount();
 
+  // Récupère les favoris du serveur et met à jour le cache local
+  async function syncFavIds() {
+    try {
+      const res = await fetch(`${API_BASE}/favorites`);
+      if (!res.ok) return;
+      const favs = await res.json();
+      favIds = new Set(favs.map(f => f.id));
+      updateFavCount();
+    } catch (e) {
+      console.warn('Impossible de charger les favoris depuis le serveur:', e);
+    }
+  }
+
+  function updateFavCount() {
+    document.getElementById('fav-count').textContent = favIds.size;
+  }
+
+  // ---- NAVIGATION ----
   function showSection(section) {
     const isMovies = section === 'movies';
     document.getElementById('movies-section').style.display = isMovies ? 'block' : 'none';
@@ -466,6 +366,7 @@
     if (!isMovies) renderFavorites();
   }
 
+  // ---- LOAD MOVIES ----
   async function loadMovies(type = 'popular', tabEl = null) {
     if (tabEl) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -490,13 +391,14 @@
     }
   }
 
+  // ---- BUILD CARD HTML ----
   function buildCardHTML(movie, i = 0, removable = false) {
     const poster = movie.poster_path
       ? `<img class="card-poster" src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="${movie.title}" loading="lazy"/>`
       : `<div class="poster-placeholder">🎬</div>`;
     const year = movie.release_date ? movie.release_date.slice(0, 4) : '—';
     const rating = movie.vote_average ? (+movie.vote_average).toFixed(1) : '—';
-    const isFav = favorites.some(f => f.id === movie.id);
+    const isFav = favIds.has(movie.id);
     const synopsis = movie.overview || 'Aucun résumé disponible.';
 
     if (removable) {
@@ -541,8 +443,6 @@
       </div>`;
   }
 
-  let currentMoviesData = {};
-
   function renderMovies(movies) {
     const container = document.getElementById('movies-container');
     if (!movies.length) {
@@ -553,77 +453,109 @@
     container.innerHTML = movies.map((movie, i) => buildCardHTML(movie, i, false)).join('');
   }
 
+  // ---- TOGGLE FAV (serveur) ----
   async function toggleFav(movieId, btn) {
-    const isSaved = favorites.some(f => f.id === movieId);
+    btn.disabled = true;
+    const isSaved = favIds.has(movieId);
+
     if (isSaved) {
-      removeFav(movieId);
+      await removeFavFromServer(movieId);
+      favIds.delete(movieId);
       btn.textContent = '+ Favoris';
       btn.classList.remove('saved');
+      showToast('Retiré des favoris');
     } else {
       const movieData = currentMoviesData[movieId];
-      if (!movieData) return;
+      if (!movieData) { btn.disabled = false; return; }
+
       try {
-        await fetch(`${API_BASE}/favorites`, {
+        const res = await fetch(`${API_BASE}/favorites`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ movie_id: parseInt(movieId) })
+          body: JSON.stringify({
+            id:           movieData.id,
+            title:        movieData.title,
+            poster_path:  movieData.poster_path  || null,
+            release_date: movieData.release_date || '',
+            vote_average: movieData.vote_average || 0,
+            overview:     movieData.overview     || ''
+          })
         });
-      } catch (e) {}
-      favorites.push({
-        id: movieData.id,
-        title: movieData.title,
-        poster_path: movieData.poster_path || null,
-        release_date: movieData.release_date || '',
-        vote_average: movieData.vote_average || 0,
-        overview: movieData.overview || ''
-      });
-      btn.textContent = '✓ Sauvegardé';
-      btn.classList.add('saved');
-      showToast('Ajouté aux favoris ✓');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        favIds.add(movieId);
+        btn.textContent = '✓ Sauvegardé';
+        btn.classList.add('saved');
+        showToast('Ajouté aux favoris ✓');
+      } catch (e) {
+        showToast('Erreur serveur — réessayez');
+        console.error(e);
+      }
     }
-    saveFavorites();
+
+    updateFavCount();
+    btn.disabled = false;
   }
 
-  function removeFav(movieId) {
-    favorites = favorites.filter(f => f.id !== movieId);
-    saveFavorites();
+  async function removeFavFromServer(movieId) {
+    try {
+      const res = await fetch(`${API_BASE}/favorites/${movieId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    } catch (e) {
+      console.error('Erreur suppression favori:', e);
+    }
+  }
+
+  async function removeFav(movieId) {
+    await removeFavFromServer(movieId);
+    favIds.delete(movieId);
+    updateFavCount();
     showToast('Retiré des favoris');
-    if (document.getElementById('favorites-section').classList.contains('active')) renderFavorites();
+    // Rafraîchir le panel favoris
+    renderFavorites();
+    // Mettre à jour le bouton dans la grille si visible
     const btn = document.querySelector(`.btn-fav[data-id="${movieId}"]`);
     if (btn) { btn.textContent = '+ Favoris'; btn.classList.remove('saved'); }
   }
 
-  function saveFavorites() {
-    localStorage.setItem('cinevault_favs', JSON.stringify(favorites));
-    updateFavCount();
-  }
-
-  function updateFavCount() {
-    document.getElementById('fav-count').textContent = favorites.length;
-  }
-
-  function renderFavorites() {
+  // ---- RENDER FAVORITES (depuis le serveur) ----
+  async function renderFavorites() {
     const el = document.getElementById('fav-content');
-    if (!favorites.length) {
-      el.innerHTML = `<p class="empty-fav">Aucun film en favori pour le moment.<br><small style="font-size:0.75rem;font-style:normal;color:var(--muted)">Survolez un film et cliquez sur "+ Favoris"</small></p>`;
-      return;
+    el.innerHTML = `<div class="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>`;
+    try {
+      const res = await fetch(`${API_BASE}/favorites`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const favorites = await res.json();
+
+      if (!favorites.length) {
+        el.innerHTML = `<p class="empty-fav">Aucun film en favori pour le moment.<br><small style="font-size:0.75rem;font-style:normal;color:var(--muted)">Survolez un film et cliquez sur "+ Favoris"</small></p>`;
+        return;
+      }
+
+      el.innerHTML = `
+        <div class="fav-meta-bar">
+          <span class="fav-count-label">${favorites.length} film${favorites.length > 1 ? 's' : ''} sauvegardé${favorites.length > 1 ? 's' : ''}</span>
+          <button class="btn-clear" onclick="clearFavorites()">Tout effacer</button>
+        </div>
+        <div class="fav-grid">
+          ${favorites.map((movie, i) => buildCardHTML(movie, i, true)).join('')}
+        </div>`;
+    } catch (e) {
+      el.innerHTML = `<div class="error-box"><strong>Erreur de chargement</strong>${e.message}</div>`;
     }
-    el.innerHTML = `
-      <div class="fav-meta-bar">
-        <span class="fav-count-label">${favorites.length} film${favorites.length > 1 ? 's' : ''} sauvegardé${favorites.length > 1 ? 's' : ''}</span>
-        <button class="btn-clear" onclick="clearFavorites()">Tout effacer</button>
-      </div>
-      <div class="fav-grid">
-        ${favorites.map((movie, i) => buildCardHTML(movie, i, true)).join('')}
-      </div>`;
   }
 
   async function clearFavorites() {
-    try { await fetch(`${API_BASE}/favorites`, { method: 'DELETE' }); } catch (e) {}
-    favorites = [];
-    localStorage.removeItem('cinevault_favs');
+    try {
+      const res = await fetch(`${API_BASE}/favorites`, { method: 'DELETE' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    } catch (e) {
+      showToast('Erreur serveur');
+      return;
+    }
+    favIds.clear();
     updateFavCount();
     renderFavorites();
+    // Réinitialiser tous les boutons dans la grille
     document.querySelectorAll('.btn-fav.saved').forEach(btn => {
       btn.textContent = '+ Favoris';
       btn.classList.remove('saved');
@@ -631,6 +563,7 @@
     showToast('Favoris effacés');
   }
 
+  // ---- TOAST ----
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -638,7 +571,7 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  loadMovies('popular');
+  init();
 </script>
 </body>
 </html>

@@ -11,25 +11,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$path   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
+// GET /movies
 if (str_starts_with($path, '/movies') && $method === 'GET') {
     $type = $_GET['type'] ?? 'popular';
     MovieController::list($type);
     exit;
 }
 
-if ($method === 'POST' && $path === '/favorites') {
+// GET /favorites — récupère tous les favoris
+if ($path === '/favorites' && $method === 'GET') {
+    MovieController::getFavorites();
+    exit;
+}
+
+// POST /favorites — ajoute un film aux favoris
+if ($path === '/favorites' && $method === 'POST') {
     MovieController::addFavorite();
     exit;
 }
 
-if ($method === 'DELETE' && $path === '/favorites') {
+// DELETE /favorites/:id — supprime un favori précis
+if (preg_match('#^/favorites/(\d+)$#', $path, $matches) && $method === 'DELETE') {
+    MovieController::removeFavorite((int)$matches[1]);
+    exit;
+}
+
+// DELETE /favorites — vide tous les favoris
+if ($path === '/favorites' && $method === 'DELETE') {
     MovieController::clearFavorites();
     exit;
 }
 
+// Pages HTML
 if ($path === '/' || $path === '/index') {
     header("Content-Type: text/html");
     require './templates/home.php';
