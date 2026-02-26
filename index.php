@@ -1,12 +1,21 @@
 <?php
-
 require_once 'config/config.php';
 require_once 'controllers/MovieController.php';
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
 header("Content-Type: application/json");
 
+<<<<<<< HEAD
+=======
+// Preflight OPTIONS
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+// ----------- ROUTES API -----------
+>>>>>>> renewbase
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -21,6 +30,15 @@ if ($method === 'POST' && $path === '/favorites') {
     exit;
 }
 
+<<<<<<< HEAD
+=======
+if ($method === 'DELETE' && $path === '/favorites') {
+    MovieController::clearFavorites();
+    exit;
+}
+
+// ----------- ROUTES FRONT HTML -----------
+>>>>>>> renewbase
 if ($path === '/' || $path === '/index') {
     header("Content-Type: text/html");
     require './templates/home.php';
