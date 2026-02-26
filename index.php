@@ -6,13 +6,11 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
 header("Content-Type: application/json");
 
-// Preflight OPTIONS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-// ----------- ROUTES API -----------
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -32,7 +30,6 @@ if ($method === 'DELETE' && $path === '/favorites') {
     exit;
 }
 
-// ----------- ROUTES FRONT HTML -----------
 if ($path === '/' || $path === '/index') {
     header("Content-Type: text/html");
     require './templates/home.php';
