@@ -28,7 +28,6 @@
       overflow-x: hidden;
     }
 
-    /* NOISE TEXTURE */
     body::before {
       content: '';
       position: fixed;
@@ -95,50 +94,11 @@
       margin-left: 6px;
     }
 
-    /* HERO */
-    .hero {
-      padding: 5rem 3rem 3rem;
-      position: relative;
-    }
-
-    .hero-tag {
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .hero-tag::before {
-      content: '';
-      display: block;
-      width: 32px;
-      height: 1px;
-      background: var(--gold);
-    }
-
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      line-height: 1.05;
-      font-weight: 700;
-      max-width: 600px;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 em {
-      color: var(--gold);
-      font-style: italic;
-    }
-
     /* TABS */
     .tabs {
       display: flex;
       gap: 0.5rem;
-      padding: 0 3rem 2rem;
+      padding: 1.5rem 3rem;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
@@ -173,14 +133,6 @@
       padding: 2.5rem 3rem 4rem;
     }
 
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-
     .movies-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -203,17 +155,9 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .movie-card:hover {
-      transform: translateY(-6px);
-    }
-
-    .movie-card:hover .card-overlay {
-      opacity: 1;
-    }
-
-    .movie-card:hover .card-poster {
-      transform: scale(1.04);
-    }
+    .movie-card:hover { transform: translateY(-6px); }
+    .movie-card:hover .card-overlay { opacity: 1; }
+    .movie-card:hover .card-poster { transform: scale(1.04); }
 
     .poster-wrap {
       position: relative;
@@ -263,10 +207,7 @@
       overflow: hidden;
     }
 
-    .overlay-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
+    .overlay-actions { display: flex; gap: 0.5rem; }
 
     .btn-fav {
       flex: 1;
@@ -288,9 +229,7 @@
       color: #0a0a0f;
     }
 
-    .card-info {
-      padding: 0.75rem;
-    }
+    .card-info { padding: 0.75rem; }
 
     .card-title {
       font-family: 'Playfair Display', serif;
@@ -308,10 +247,7 @@
       align-items: center;
     }
 
-    .card-date {
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
+    .card-date { font-size: 0.72rem; color: var(--muted); }
 
     .card-rating {
       display: flex;
@@ -321,10 +257,7 @@
       color: var(--gold);
       font-weight: 500;
     }
-
-    .card-rating::before {
-      content: '★';
-    }
+    .card-rating::before { content: '★'; }
 
     /* LOADING */
     .loader {
@@ -352,11 +285,7 @@
     }
 
     /* ERROR */
-    .error-box {
-      text-align: center;
-      padding: 4rem;
-      color: var(--muted);
-    }
+    .error-box { text-align: center; padding: 4rem; color: var(--muted); }
     .error-box strong { color: var(--accent); display: block; font-size: 1.2rem; margin-bottom: 0.5rem; }
 
     /* TOAST */
@@ -376,26 +305,20 @@
       z-index: 200;
     }
 
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    .toast.show { transform: translateY(0); opacity: 1; }
 
     /* FAVORITES PANEL */
     .favorites-panel {
       display: none;
-      padding: 2rem 3rem 4rem;
+      padding: 2.5rem 3rem 4rem;
     }
 
-    .favorites-panel.active {
-      display: block;
-    }
+    .favorites-panel.active { display: block; }
 
     .fav-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1.5rem;
-      margin-top: 1rem;
     }
 
     .fav-card {
@@ -408,7 +331,6 @@
     }
 
     .fav-card:hover { transform: translateY(-5px); }
-
     .fav-card:hover .fav-card-overlay { opacity: 1; }
     .fav-card:hover .card-poster { transform: scale(1.04); }
 
@@ -437,11 +359,9 @@
       transition: all 0.2s;
     }
 
-    .btn-remove:hover {
-      background: var(--accent);
-      color: #fff;
-    }
+    .btn-remove:hover { background: var(--accent); color: #fff; }
 
+    /* Barre au-dessus de la grille favoris */
     .fav-meta-bar {
       display: flex;
       justify-content: space-between;
@@ -449,10 +369,7 @@
       margin-bottom: 1.5rem;
     }
 
-    .fav-count-label {
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
+    .fav-count-label { color: var(--muted); font-size: 0.85rem; }
 
     .btn-clear {
       padding: 0.4rem 1rem;
@@ -470,6 +387,7 @@
     .btn-clear:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
     .fav-card-info { padding: 0.75rem; }
+
     .fav-card-title {
       font-family: 'Playfair Display', serif;
       font-size: 0.92rem;
@@ -479,6 +397,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .fav-card-meta {
       display: flex;
       justify-content: space-between;
@@ -490,21 +409,13 @@
       font-style: italic;
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem;
-      margin-top: 1.5rem;
-    }
-
-    /* DECORATIVE LINE */
-    .deco-line {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(to right, var(--gold), transparent);
-      margin-bottom: 1.5rem;
+      padding: 3rem 0;
     }
 
     @media (max-width: 768px) {
       header { padding: 1rem 1.5rem; }
-      .hero, .tabs, .movies-section { padding-left: 1.5rem; padding-right: 1.5rem; }
-      .movies-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+      .tabs, .movies-section, .favorites-panel { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .movies-grid, .fav-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
     }
   </style>
 </head>
@@ -520,12 +431,7 @@
   </nav>
 </header>
 
-<section class="hero">
-  <div class="hero-tag">Propulsé par TMDB</div>
-  <h1>Découvrez les films<br>qui <em>vous attendent</em></h1>
-</section>
-
-<div class="tabs">
+<div class="tabs" id="tabs-bar">
   <button class="tab-btn active" onclick="loadMovies('popular', this)">Populaires</button>
   <button class="tab-btn" onclick="loadMovies('top_rated', this)">Top Noté</button>
   <button class="tab-btn" onclick="loadMovies('now_playing', this)">À l'affiche</button>
@@ -533,39 +439,33 @@
 </div>
 
 <section class="movies-section" id="movies-section">
-  <div class="section-label">Résultats</div>
-  <div class="deco-line"></div>
   <div id="movies-container" class="movies-grid"></div>
 </section>
 
 <section class="favorites-panel" id="favorites-section">
-  <div class="section-label">Mes favoris</div>
-  <div class="deco-line"></div>
   <div id="fav-content"></div>
 </section>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  const API_BASE = ''; // Remplacez par ex: http://localhost:8000
+  const API_BASE = '';
 
-  // favorites = tableau d'objets film {id, title, poster_path, release_date, vote_average}
   let favorites = JSON.parse(localStorage.getItem('cinevault_favs') || '[]');
-  // Migration: si anciens favoris étaient des nombres, on réinitialise
   if (favorites.length && typeof favorites[0] !== 'object') {
     favorites = [];
     localStorage.removeItem('cinevault_favs');
   }
   updateFavCount();
 
-  // ---- NAVIGATION ----
   function showSection(section) {
-    document.getElementById('movies-section').style.display = section === 'movies' ? 'block' : 'none';
-    document.getElementById('favorites-section').classList.toggle('active', section === 'favorites');
-    if (section === 'favorites') renderFavorites();
+    const isMovies = section === 'movies';
+    document.getElementById('movies-section').style.display = isMovies ? 'block' : 'none';
+    document.getElementById('favorites-section').classList.toggle('active', !isMovies);
+    document.getElementById('tabs-bar').style.display = isMovies ? 'flex' : 'none';
+    if (!isMovies) renderFavorites();
   }
 
-  // ---- LOAD MOVIES ----
   async function loadMovies(type = 'popular', tabEl = null) {
     if (tabEl) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -590,7 +490,6 @@
     }
   }
 
-  // ---- BUILD CARD HTML (réutilisé pour movies & favoris) ----
   function buildCardHTML(movie, i = 0, removable = false) {
     const poster = movie.poster_path
       ? `<img class="card-poster" src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="${movie.title}" loading="lazy"/>`
@@ -642,8 +541,6 @@
       </div>`;
   }
 
-  // ---- RENDER MOVIES ----
-  // On stocke les données pour pouvoir les retrouver lors du toggleFav
   let currentMoviesData = {};
 
   function renderMovies(movies) {
@@ -656,10 +553,8 @@
     container.innerHTML = movies.map((movie, i) => buildCardHTML(movie, i, false)).join('');
   }
 
-  // ---- TOGGLE FAV ----
   async function toggleFav(movieId, btn) {
     const isSaved = favorites.some(f => f.id === movieId);
-
     if (isSaved) {
       removeFav(movieId);
       btn.textContent = '+ Favoris';
@@ -667,16 +562,13 @@
     } else {
       const movieData = currentMoviesData[movieId];
       if (!movieData) return;
-
-      // POST au backend
       try {
         await fetch(`${API_BASE}/favorites`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ movie_id: parseInt(movieId) })
         });
-      } catch (e) { /* backend indisponible, on sauvegarde quand même */ }
-
+      } catch (e) {}
       favorites.push({
         id: movieData.id,
         title: movieData.title,
@@ -689,7 +581,6 @@
       btn.classList.add('saved');
       showToast('Ajouté aux favoris ✓');
     }
-
     saveFavorites();
   }
 
@@ -697,11 +588,7 @@
     favorites = favorites.filter(f => f.id !== movieId);
     saveFavorites();
     showToast('Retiré des favoris');
-    // Si le panel favoris est actif, on le rafraîchit
-    if (document.getElementById('favorites-section').classList.contains('active')) {
-      renderFavorites();
-    }
-    // Mettre à jour le bouton dans la grille si visible
+    if (document.getElementById('favorites-section').classList.contains('active')) renderFavorites();
     const btn = document.querySelector(`.btn-fav[data-id="${movieId}"]`);
     if (btn) { btn.textContent = '+ Favoris'; btn.classList.remove('saved'); }
   }
@@ -715,7 +602,6 @@
     document.getElementById('fav-count').textContent = favorites.length;
   }
 
-  // ---- RENDER FAVORITES ----
   function renderFavorites() {
     const el = document.getElementById('fav-content');
     if (!favorites.length) {
@@ -733,17 +619,11 @@
   }
 
   async function clearFavorites() {
-    // Vider côté backend
-    try {
-      await fetch(`${API_BASE}/favorites`, { method: 'DELETE' });
-    } catch (e) { /* backend indisponible */ }
-
-    // Vider côté frontend
+    try { await fetch(`${API_BASE}/favorites`, { method: 'DELETE' }); } catch (e) {}
     favorites = [];
     localStorage.removeItem('cinevault_favs');
     updateFavCount();
     renderFavorites();
-    // Réinitialiser tous les boutons dans la grille
     document.querySelectorAll('.btn-fav.saved').forEach(btn => {
       btn.textContent = '+ Favoris';
       btn.classList.remove('saved');
@@ -751,7 +631,6 @@
     showToast('Favoris effacés');
   }
 
-  // ---- TOAST ----
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -759,7 +638,6 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ---- INIT ----
   loadMovies('popular');
 </script>
 </body>
