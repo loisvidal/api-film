@@ -290,6 +290,67 @@
       font-size: 1.1rem; padding: 3rem 0;
     }
 
+    /* SEARCH BAR */
+    .search-wrap {
+      padding: 1.2rem 3rem 0;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .search-input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      padding: 0.65rem 1.1rem;
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { border-color: var(--gold); }
+
+    .search-btn {
+      padding: 0.65rem 1.4rem;
+      background: var(--gold);
+      border: none;
+      color: #0a0a0f;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: background 0.2s;
+    }
+    .search-btn:hover { background: var(--gold-light); }
+
+    .search-clear {
+      padding: 0.65rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all 0.2s;
+      display: none;
+    }
+    .search-clear.visible { display: block; }
+    .search-clear:hover { border-color: var(--accent); color: var(--accent); }
+
+    .search-results-label {
+      padding: 1rem 3rem 0;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
     @media (max-width: 768px) {
       header { padding: 1rem 1.5rem; }
       .tabs, .movies-section, .favorites-panel { padding-left: 1.5rem; padding-right: 1.5rem; }
@@ -308,6 +369,19 @@
     </a>
   </nav>
 </header>
+
+<div class="search-wrap" id="search-wrap">
+  <input
+    class="search-input"
+    id="search-input"
+    type="text"
+    placeholder="Rechercher un film..."
+    onkeydown="if(event.key==='Enter') doSearch()"
+  />
+  <button class="search-btn" onclick="doSearch()">Rechercher</button>
+  <button class="search-clear" id="search-clear" onclick="clearSearch()">✕ Effacer</button>
+</div>
+<div class="search-results-label" id="search-results-label" style="display:none"></div>
 
 <div class="tabs" id="tabs-bar">
   <button class="tab-btn active" onclick="loadMovies('popular', this)">Populaires</button>
@@ -363,6 +437,8 @@
     document.getElementById('movies-section').style.display = isMovies ? 'block' : 'none';
     document.getElementById('favorites-section').classList.toggle('active', !isMovies);
     document.getElementById('tabs-bar').style.display = isMovies ? 'flex' : 'none';
+    document.getElementById('search-wrap').style.display = isMovies ? 'flex' : 'none';
+    document.getElementById('search-results-label').style.display = 'none';
     if (!isMovies) renderFavorites();
   }
 
@@ -452,6 +528,52 @@
     movies.forEach(m => { currentMoviesData[m.id] = m; });
     container.innerHTML = movies.map((movie, i) => buildCardHTML(movie, i, false)).join('');
   }
+
+  // ---- SEARCH ----
+  async function doSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    if (!query) return;
+
+    showSection('movies');
+    document.getElementById('search-clear').classList.add('visible');
+
+    const label = document.getElementById('search-results-label');
+    label.style.display = 'block';
+    label.textContent = `Résultats pour "${query}"`;
+
+    const container = document.getElementById('movies-container');
+    container.innerHTML = `<div class="loader" style="grid-column:1/-1">
+      <div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div>
+    </div>`;
+
+    try {
+      const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      const results = data.results || [];
+      if (!results.length) {
+        container.innerHTML = `<div class="error-box" style="grid-column:1/-1"><strong>Aucun résultat</strong>Aucun film trouvé pour "${query}"</div>`;
+        return;
+      }
+      renderMovies(results);
+    } catch (err) {
+      container.innerHTML = `<div class="error-box" style="grid-column:1/-1"><strong>Erreur</strong>${err.message}</div>`;
+    }
+  }
+
+  function clearSearch() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-clear').classList.remove('visible');
+    document.getElementById('search-results-label').style.display = 'none';
+    // Recharger l'onglet actif
+    const activeTab = document.querySelector('.tab-btn.active');
+    const type = activeTab ? activeTab.textContent.trim() : 'popular';
+    // On recharge popular par défaut
+    loadMovies('popular', document.querySelector('.tab-btn'));
+  }
+
+  // ---- SEARCH ----
 
   // ---- TOGGLE FAV (serveur) ----
   async function toggleFav(movieId, btn) {

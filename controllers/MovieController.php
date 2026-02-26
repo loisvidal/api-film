@@ -8,6 +8,15 @@ class MovieController {
         echo json_encode($movies);
     }
 
+    public static function search($query) {
+        if (empty(trim($query))) {
+            echo json_encode(["results" => []]);
+            return;
+        }
+        $results = TMDBService::searchMovies($query);
+        echo json_encode($results);
+    }
+
     public static function getFavorites() {
         $file = __DIR__ . '/../data/favorites.json';
         if (!file_exists($file)) {

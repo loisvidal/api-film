@@ -21,6 +21,13 @@ if (str_starts_with($path, '/movies') && $method === 'GET') {
     exit;
 }
 
+// GET /search?q=...
+if ($path === '/search' && $method === 'GET') {
+    $query = $_GET['q'] ?? '';
+    MovieController::search($query);
+    exit;
+}
+
 // GET /favorites — récupère tous les favoris
 if ($path === '/favorites' && $method === 'GET') {
     MovieController::getFavorites();
