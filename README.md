@@ -1,5 +1,6 @@
 Membres du projet : Caron Léo - Vidal Lois
 
+juste le php et la partie obligatoire sont sur la branche obligatoire, sur cette branche il y a le front, les commandes portman sont sur le readme obligatoire.
 
 Pour le lancement de l'API : Pour que l'api du site soit active, dans le terminal éxécuter cette commande :
 "php -S localhost:8000"
@@ -11,4 +12,4 @@ Alors le serveur local est bien actif.
 
 
 Menu principal: http://localhost:8000
-Liste des films favoris: http://localhost:8000/#
+
