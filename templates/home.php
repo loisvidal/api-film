@@ -290,7 +290,6 @@
       font-size: 1.1rem; padding: 3rem 0;
     }
 
-    /* SEARCH BAR */
     .search-wrap {
       padding: 1.2rem 3rem 0;
       display: flex;
@@ -401,20 +400,15 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const API_BASE = ''; // ex: 'http://localhost:8000'
-
-  // Cache local des IDs favoris pour savoir si un film est déjà sauvegardé
-  // (évite de requêter le serveur à chaque rendu de carte)
+  const API_BASE = '';
   let favIds = new Set();
   let currentMoviesData = {};
 
-  // ---- INIT ----
   async function init() {
     await syncFavIds();
     loadMovies('popular');
   }
 
-  // Récupère les favoris du serveur et met à jour le cache local
   async function syncFavIds() {
     try {
       const res = await fetch(`${API_BASE}/favorites`);
@@ -431,7 +425,6 @@
     document.getElementById('fav-count').textContent = favIds.size;
   }
 
-  // ---- NAVIGATION ----
   function showSection(section) {
     const isMovies = section === 'movies';
     document.getElementById('movies-section').style.display = isMovies ? 'block' : 'none';
@@ -442,7 +435,6 @@
     if (!isMovies) renderFavorites();
   }
 
-  // ---- LOAD MOVIES ----
   async function loadMovies(type = 'popular', tabEl = null) {
     if (tabEl) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -467,7 +459,6 @@
     }
   }
 
-  // ---- BUILD CARD HTML ----
   function buildCardHTML(movie, i = 0, removable = false) {
     const poster = movie.poster_path
       ? `<img class="card-poster" src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="${movie.title}" loading="lazy"/>`
@@ -529,7 +520,6 @@
     container.innerHTML = movies.map((movie, i) => buildCardHTML(movie, i, false)).join('');
   }
 
-  // ---- SEARCH ----
   async function doSearch() {
     const query = document.getElementById('search-input').value.trim();
     if (!query) return;
@@ -566,16 +556,11 @@
     document.getElementById('search-input').value = '';
     document.getElementById('search-clear').classList.remove('visible');
     document.getElementById('search-results-label').style.display = 'none';
-    // Recharger l'onglet actif
     const activeTab = document.querySelector('.tab-btn.active');
     const type = activeTab ? activeTab.textContent.trim() : 'popular';
-    // On recharge popular par défaut
     loadMovies('popular', document.querySelector('.tab-btn'));
   }
 
-  // ---- SEARCH ----
-
-  // ---- TOGGLE FAV (serveur) ----
   async function toggleFav(movieId, btn) {
     btn.disabled = true;
     const isSaved = favIds.has(movieId);
@@ -632,14 +617,11 @@
     favIds.delete(movieId);
     updateFavCount();
     showToast('Retiré des favoris');
-    // Rafraîchir le panel favoris
     renderFavorites();
-    // Mettre à jour le bouton dans la grille si visible
     const btn = document.querySelector(`.btn-fav[data-id="${movieId}"]`);
     if (btn) { btn.textContent = '+ Favoris'; btn.classList.remove('saved'); }
   }
 
-  // ---- RENDER FAVORITES (depuis le serveur) ----
   async function renderFavorites() {
     const el = document.getElementById('fav-content');
     el.innerHTML = `<div class="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>`;
@@ -677,7 +659,6 @@
     favIds.clear();
     updateFavCount();
     renderFavorites();
-    // Réinitialiser tous les boutons dans la grille
     document.querySelectorAll('.btn-fav.saved').forEach(btn => {
       btn.textContent = '+ Favoris';
       btn.classList.remove('saved');
@@ -685,7 +666,6 @@
     showToast('Favoris effacés');
   }
 
-  // ---- TOAST ----
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;

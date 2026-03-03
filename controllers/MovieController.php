@@ -31,7 +31,6 @@ class MovieController {
         $json = file_get_contents("php://input");
         $data = json_decode($json, true);
 
-        // Validation : on attend un objet film avec au moins un id
         if (!isset($data['id'])) {
             http_response_code(400);
             echo json_encode(["error" => "Champ 'id' obligatoire"]);
@@ -40,9 +39,7 @@ class MovieController {
 
         $file = __DIR__ . '/../data/favorites.json';
 
-        // Créer le fichier s'il n'existe pas
         if (!file_exists($file)) {
-            // S'assurer que le dossier data/ existe
             $dir = dirname($file);
             if (!is_dir($dir)) mkdir($dir, 0755, true);
             file_put_contents($file, json_encode([]));
@@ -51,7 +48,6 @@ class MovieController {
         $favorites = json_decode(file_get_contents($file), true);
         if (!is_array($favorites)) $favorites = [];
 
-        // Eviter les doublons (comparaison par id)
         $alreadyExists = false;
         foreach ($favorites as $fav) {
             if (isset($fav['id']) && $fav['id'] === (int)$data['id']) {
@@ -61,7 +57,6 @@ class MovieController {
         }
 
         if (!$alreadyExists) {
-            // On stocke l'objet film complet reçu du frontend
             $favorites[] = [
                 'id'           => (int) $data['id'],
                 'title'        => $data['title']        ?? '',
